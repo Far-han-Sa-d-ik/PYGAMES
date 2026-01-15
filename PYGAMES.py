@@ -1,4 +1,4 @@
-#---imports---# 
+#---imports---#
 import turtle as t
 import time as ti
 import random as r
@@ -65,7 +65,6 @@ def antgame():
     b.direction = 'stop'
     b.goto(60, -60)
 
-    
     #t.pen()
     p = t.Turtle()
     p.color("#171717")
@@ -82,7 +81,7 @@ def antgame():
         if h.direction == "up":
             y = h.ycor()
             h.sety(y+20)
-        
+       
         if h.direction == "down":
             y = h.ycor()
             h.sety(y-20)
@@ -135,22 +134,22 @@ def antgame():
         p.write("Restarting", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting.", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting..", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting...", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.67)
-        
+       
         #t.NewScoring()
         global score, high_score
         p.clear()
@@ -216,20 +215,20 @@ def antgame():
 
         #t.FoodGopGop()
         if h.distance(f) < 20 or h.distance(d) < 20:
-            
+           
             #t.Gridding()
             fx = snap(r.randint(-280, 280))
             fy = snap(r.randint(-280, 280))
             f.goto(fx, fy)
-            
+           
             dx = snap(r.randint(-280, 280))
             dy = snap(r.randint(-280, 280))
             d.goto(dx, dy)
-            
+           
             bx = snap(r.randint(-280, 280))
             by = snap(r.randint(-280, 280))
             b.goto(bx, by)
-            
+           
             score = score + 1
 
             #t.NewScoring()
@@ -240,15 +239,15 @@ def antgame():
 
         #t.Boom()
         if h.distance(b) < 20:
-            
+           
             #t.Fire()
             b.color("#FF8000")
-            
+           
             #t.Devestated()
             for i in range(1, 10):
                 h.shapesize(i, i)
                 b.shapesize(i * 1.5, i * 1.5)
-                
+               
                 #t.Destruction()
                 if i % 2 == 0:
                     h.color("yellow")
@@ -256,10 +255,10 @@ def antgame():
                 else:
                     h.color("orange")
                     scr.bgcolor("black")
-                
+               
                 scr.update()
                 ti.sleep(0.05)
-            
+           
             #t.Calmation()
             h.shapesize(1, 1)
             b.shapesize(1, 1)
@@ -328,7 +327,7 @@ def snakegame():
         if h.direction == "up":
             y = h.ycor()
             h.sety(y+20)
-        
+       
         if h.direction == "down":
             y = h.ycor()
             h.sety(y-20)
@@ -375,22 +374,22 @@ def snakegame():
         p.write("Restarting", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting.", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting..", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.3)
-        
+       
         p.clear()
         p.write("Restarting...", align="center", font=("Monospace", 20, 'bold'))
         scr.update()
         ti.sleep(0.67)
-        
+       
         #t.NewScoring()
         global score, high_score
         p.clear()
@@ -481,7 +480,7 @@ def snakegame():
             p.clear()
             p.goto(0, 267)
             p.write(f"Score: {score} | Highscore: {high_score}", align="center", font=("Monospace", 20, 'bold'))
-            
+           
             #t.GoldenTail()
             for _ in range(3):
                 bodee = t.Turtle('square')
@@ -500,7 +499,7 @@ def snakegame():
             x = h.xcor()
             y = h.ycor()
             body[0].goto(x, y)
-        
+       
         move()
 
         #t.TailGopGop()
@@ -515,7 +514,7 @@ def drawmenu():
     scr = t.Screen()
 
     #t.Menu()
-    scr.clear() 
+    scr.clear()
     scr.title("Python Games")
     scr.bgcolor("#72C8FA")
     scr.setup(600, 600)
@@ -525,7 +524,7 @@ def drawmenu():
     btn_ant = t.Turtle()
     btn_ant.shape("square")
     btn_ant.resizemode("user")
-    btn_ant.shapesize(stretch_wid=2, stretch_len=10, outline=5) 
+    btn_ant.shapesize(stretch_wid=2, stretch_len=10, outline=5)
     btn_ant.color("black", "#FFFF00")
     btn_ant.penup()
     btn_ant.goto(0, 20)
@@ -562,7 +561,7 @@ def drawmenu():
     #t.Click()
     btn_ant.onclick(click_ant)
     btn_snake.onclick(click_snake)
-    
+
     scr.update()
     scr.mainloop()
 
