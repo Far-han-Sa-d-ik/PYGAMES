@@ -6,10 +6,25 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.12.0/brython_stdlib.js"></script>
     <title>PYGAMES</title>
     <style>
-        body { background-color: #72C8FA; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #turtle_canvas { border: 5px solid #171717; background-color: white; }
+        body { 
+            background-color: #72C8FA; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        #turtle_canvas { 
+            border: 5px solid #171717; 
+            background-color: white;
+            width: 600px;
+            height: 600px;
+        }
     </style>
 </head>
+
 <body onload="brython()">
     <div id="turtle_canvas"></div>
 
@@ -18,7 +33,7 @@ import turtle as t
 import time as ti
 import random as r
 
-# Setup the drawing area immediately
+# Crucial: Tells the code where to draw
 t.set_panel("turtle_canvas")
 
 #---global.variables---#
@@ -61,6 +76,7 @@ def antgame():
     p.hideturtle()
     p.penup()
     p.goto(0, 260)
+    p.write(f"Score: {score} | Highscore: {high_score}", align="center", font=("Monospace", 20, 'bold'))
 
     def move():
         if h.direction == "up": h.sety(h.ycor()+20)
@@ -116,6 +132,7 @@ def snakegame():
     p.hideturtle()
     p.penup()
     p.goto(0, 260)
+    p.write(f"Score: {score} | Highscore: {high_score}", align="center", font=("Monospace", 20, 'bold'))
 
     def move_snake():
         if h.direction == "up": h.sety(h.ycor()+20)
@@ -152,10 +169,10 @@ def snakegame():
         t.ontimer(snake_loop, 100)
 
     scr.listen()
-    scr.onkey(lambda: setattr(h, 'direction', 'up') if h.direction != 'down' else None, "Up")
-    scr.onkey(lambda: setattr(h, 'direction', 'down') if h.direction != 'up' else None, "Down")
-    scr.onkey(lambda: setattr(h, 'direction', 'left') if h.direction != 'right' else None, "Left")
-    scr.onkey(lambda: setattr(h, 'direction', 'right') if h.direction != 'left' else None, "Right")
+    scr.onkey(lambda: setattr(h, 'direction', 'up'), "Up")
+    scr.onkey(lambda: setattr(h, 'direction', 'down'), "Down")
+    scr.onkey(lambda: setattr(h, 'direction', 'left'), "Left")
+    scr.onkey(lambda: setattr(h, 'direction', 'right'), "Right")
     snake_loop()
 
 #---menuscreen---#
@@ -182,12 +199,14 @@ def drawmenu():
     logo.penup()
     logo.goto(0, 150)
     logo.write("PYGAMES", align="center", font=("Monospace", 40, "bold"))
+    logo.goto(0, 110)
+    logo.write("CLICK A BUTTON", align="center", font=("Monospace", 15, "bold"))
 
     btn_ant.onclick(lambda x, y: antgame())
     btn_snake.onclick(lambda x, y: snakegame())
     scr.update()
 
-# Start the game
+# Force start
 drawmenu()
 t.done()
     </script>
