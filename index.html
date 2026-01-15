@@ -7,129 +7,74 @@
     <title>PYGAMES</title>
     <style>
         body { background-color: #72C8FA; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        canvas { border: 5px solid #171717; }
+        #turtle_canvas { border: 5px solid #171717; background-color: white; }
     </style>
 </head>
 <body onload="brython()">
     <div id="turtle_canvas"></div>
+
     <script type="text/python">
 import turtle as t
 import time as ti
 import random as r
 
-# Redirect output to the div
+# Setup the drawing area immediately
 t.set_panel("turtle_canvas")
 
 #---global.variables---#
 score = 0
 high_score = 0
-target = 10
 
-#t.Snap()
 def snap(val):
     return round(val / 20) * 20
 
 #---antgame---#
 def antgame():
-    #---setup---#
+    global score, high_score
+    score = 0
     scr = t.Screen()
-    scr.title("Ant Game")
+    scr.clear()
     scr.bgcolor("#FACA72")
-    scr.setup(600, 600)
     scr.tracer(0)
 
-    global score, high_score
-
-    #t.head()
-    h = t.Turtle()
-    h.shape('turtle')
+    h = t.Turtle('turtle')
     h.color("#ff2600")
     h.penup()
     h.direction = 'stop'
-    h.setheading(90)
-
-    #t.foods()
-    f = t.Turtle()
-    f.shape('circle')
+    
+    f = t.Turtle('circle')
     f.penup()
     f.color("#F3D6D6")
     f.goto(0, 60)
 
-    d = t.Turtle()
-    d.shape('circle')
+    d = t.Turtle('circle')
     d.penup()
     d.color("#EDAB48")
     d.goto(0, -60)
 
-    #t.Bomb()
-    b = t.Turtle()
-    b.shape('circle')
+    b = t.Turtle('circle')
     b.penup()
     b.color("#052304")
     b.goto(60, -60)
 
-    #t.pen()
     p = t.Turtle()
-    p.color("#171717")
     p.hideturtle()
     p.penup()
-    p.goto(0, 267)
-    p.write(f"Score: {score} | Highscore: {high_score}", align= "center", font= ("Monospace", 20, 'bold'))
+    p.goto(0, 260)
 
-    #-----Functions--------#
     def move():
         if h.direction == "up": h.sety(h.ycor()+20)
         if h.direction == "down": h.sety(h.ycor()-20)
         if h.direction == "left": h.setx(h.xcor()-20)
         if h.direction == "right": h.setx(h.xcor()+20)
 
-    def go_up():
-        if h.direction != "down":
-            h.direction = "up"
-            h.setheading(90)
-    def go_down():
-        if h.direction != "up":
-            h.direction = "down"
-            h.setheading(270)
-    def go_left():
-        if h.direction != "right":
-            h.direction = "left"
-            h.setheading(180)
-    def go_right():
-        if h.direction != "left":
-            h.direction = "right"
-            h.setheading(0)
-
-    def gameover():
-        h.hideturtle()
-        f.hideturtle()
-        d.hideturtle()
-        b.hideturtle()
-        scr.update()
-        # Reset Logic
+    def ant_loop():
         global score, high_score
-        if score > high_score: high_score = score
-        score = 0
-        t.ontimer(lambda: drawmenu(), 1000)
-
-    def stoprun():
-        scr.bye()
-
-    #---Executing.Prep---#
-    scr.listen()
-    scr.onkey(go_up, "Up"); scr.onkey(go_down, "Down"); scr.onkey(go_left, "Left"); scr.onkey(go_right, "Right")
-    scr.onkey(go_up, "w"); scr.onkey(go_down, "s"); scr.onkey(go_left, "a"); scr.onkey(go_right, "d")
-    scr.onkey(stoprun, "Escape")
-
-    #-------Main.Loop converted for Web--------#
-    def main_loop():
-        global score
-        scr.update()
-
-        if abs(h.xcor()) > 290 or abs(h.ycor()) > 290:
-            gameover()
+        move()
+        if abs(h.xcor()) > 290 or abs(h.ycor()) > 290 or h.distance(b) < 20:
+            if score > high_score: high_score = score
+            drawmenu()
             return
-
         if h.distance(f) < 20 or h.distance(d) < 20:
             f.goto(snap(r.randint(-280, 280)), snap(r.randint(-280, 280)))
             d.goto(snap(r.randint(-280, 280)), snap(r.randint(-280, 280)))
@@ -137,23 +82,25 @@ def antgame():
             score += 1
             p.clear()
             p.write(f"Score: {score} | Highscore: {high_score}", align="center", font=("Monospace", 20, 'bold'))
+        scr.update()
+        t.ontimer(ant_loop, 70)
 
-        if h.distance(b) < 20:
-            gameover()
-            return
-
-        move()
-        t.ontimer(main_loop, 67)
-
-    main_loop()
+    scr.listen()
+    scr.onkey(lambda: setattr(h, 'direction', 'up'), "Up")
+    scr.onkey(lambda: setattr(h, 'direction', 'down'), "Down")
+    scr.onkey(lambda: setattr(h, 'direction', 'left'), "Left")
+    scr.onkey(lambda: setattr(h, 'direction', 'right'), "Right")
+    ant_loop()
 
 #---snakegame---#
 def snakegame():
+    global score, high_score
+    score = 0
     scr = t.Screen()
+    scr.clear()
     scr.bgcolor("#0CB114")
     scr.tracer(0)
 
-    global score, high_score
     h = t.Turtle('square')
     h.color("#ffdd00")
     h.penup()
@@ -165,88 +112,51 @@ def snakegame():
     f.color("#07B3B9")
     f.goto(0, 60)
 
-    fg = t.Turtle('circle')
-    fg.penup()
-    fg.color("#FFD700")
-    fg.hideturtle()
-
     p = t.Turtle()
     p.hideturtle()
     p.penup()
-    p.goto(0, 267)
-    p.write(f"Score: {score} | Highscore: {high_score}", align= "center", font= ("Monospace", 20, 'bold'))
+    p.goto(0, 260)
 
-    def move():
+    def move_snake():
         if h.direction == "up": h.sety(h.ycor()+20)
         if h.direction == "down": h.sety(h.ycor()-20)
         if h.direction == "left": h.setx(h.xcor()-20)
         if h.direction == "right": h.setx(h.xcor()+20)
 
-    def go_up():
-        if h.direction != "down": h.direction = "up"
-    def go_down():
-        if h.direction != "up": h.direction = "down"
-    def go_left():
-        if h.direction != "right": h.direction = "left"
-    def go_right():
-        if h.direction != "left": h.direction = "right"
-
-    def gameover():
+    def snake_loop():
         global score, high_score
-        if score > high_score: high_score = score
-        score = 0
-        drawmenu()
-
-    scr.listen()
-    scr.onkey(go_up, "Up"); scr.onkey(go_down, "Down"); scr.onkey(go_left, "Left"); scr.onkey(go_right, "Right")
-    scr.onkey(go_up, "w"); scr.onkey(go_down, "s"); scr.onkey(go_left, "a"); scr.onkey(go_right, "d")
-
-    def main_loop():
-        global score
-        scr.update()
-
         if abs(h.xcor()) > 290 or abs(h.ycor()) > 290:
-            gameover()
+            if score > high_score: high_score = score
+            drawmenu()
             return
-
         if h.distance(f) < 20:
             f.goto(snap(r.randint(-280, 280)), snap(r.randint(-280, 280)))
             score += 1
-            if score % 5 == 0:
-                fg.goto(snap(r.randint(-270, 270)), snap(r.randint(-270, 270)))
-                fg.showturtle()
             p.clear()
             p.write(f"Score: {score} | Highscore: {high_score}", align="center", font=("Monospace", 20, 'bold'))
-            bodee = t.Turtle("square")
-            bodee.color("#ffff79")
-            bodee.penup()
-            body.append(bodee)
-
-        if h.distance(fg) < 20:
-            fg.hideturtle()
-            fg.goto(1000, 1000)
-            score += 3
-            for _ in range(3):
-                bodee = t.Turtle('square')
-                bodee.color("#ffd500")
-                bodee.penup()
-                body.append(bodee)
-
-        for m in range(len(body)-1, 0, -1):
-            body[m].goto(body[m-1].xcor(), body[m-1].ycor())
+            new_segment = t.Turtle('square')
+            new_segment.color("#ffff79")
+            new_segment.penup()
+            body.append(new_segment)
+        for i in range(len(body)-1, 0, -1):
+            body[i].goto(body[i-1].xcor(), body[i-1].ycor())
         if len(body) > 0:
             body[0].goto(h.xcor(), h.ycor())
-        
-        move()
-
-        for w in body:
-            if w.distance(h) < 10:
-                gameover()
+        move_snake()
+        for segment in body:
+            if segment.distance(h) < 10:
+                if score > high_score: high_score = score
+                drawmenu()
                 return
+        scr.update()
+        t.ontimer(snake_loop, 100)
 
-        t.ontimer(main_loop, 67)
-
-    main_loop()
+    scr.listen()
+    scr.onkey(lambda: setattr(h, 'direction', 'up') if h.direction != 'down' else None, "Up")
+    scr.onkey(lambda: setattr(h, 'direction', 'down') if h.direction != 'up' else None, "Down")
+    scr.onkey(lambda: setattr(h, 'direction', 'left') if h.direction != 'right' else None, "Left")
+    scr.onkey(lambda: setattr(h, 'direction', 'right') if h.direction != 'left' else None, "Right")
+    snake_loop()
 
 #---menuscreen---#
 def drawmenu():
@@ -277,6 +187,7 @@ def drawmenu():
     btn_snake.onclick(lambda x, y: snakegame())
     scr.update()
 
+# Start the game
 drawmenu()
 t.done()
     </script>
