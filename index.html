@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.12.0/brython.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.12.0/brython_stdlib.js"></script>
+    <title>PYGAMES</title>
+    <style>
+        body { background-color: #72C8FA; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        canvas { border: 5px solid #171717; background-color: white; }
+    </style>
+</head>
+
+<body onload="brython()">
+    <div id="turtle_canvas"></div>
+
+    <script type="text/python">
+        import turtle
+        from browser import document
+        
+        # This redirects the turtle window to the div above
+        turtle.set_panel("turtle_canvas")
+
+        # PASTE YOUR ENTIRE PYTHON CODE BELOW THIS LINE
+        # (Copy everything from "import turtle as t" down to "drawmenu()")
+    </script>
+</body>
+</html>
